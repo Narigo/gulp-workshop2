@@ -5,11 +5,13 @@ var gutil = require('gulp-util');
 var plumber = require('gulp-plumber');
 var through = require('through2');
 var browserSync = require('browser-sync');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
 var del = require('del');
 
 gulp.task('default', ['build']);
 
-gulp.task('build', ['build:copy', 'build:scss']);
+gulp.task('build', ['build:copy', 'build:scss', 'build:scripts']);
 gulp.task('build:scss', compileScssTask);
 gulp.task('build:copy', copyTask);
 gulp.task('build:scripts', buildScriptsTask);
@@ -23,6 +25,17 @@ gulp.task('watch:copy', watchCopyTask);
 gulp.task('dev', ['watch'], setupBrowserSyncTask);
 
 gulp.task('clean', cleanTask);
+
+function buildScriptsTask() {
+  return browserify('src/scripts/main.js')
+    .bundle()
+    .on('error', function (err) {
+      gutil.log('error occurred in pipeline:', err);
+      this.push(null);
+    })
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest('out/'));
+}
 
 function setupBrowserSyncTask() {
   browserSync({
