@@ -7,6 +7,8 @@ var through = require('through2');
 var browserSync = require('browser-sync');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
 
 gulp.task('default', ['build']);
@@ -28,13 +30,18 @@ gulp.task('dev', ['watch'], setupBrowserSyncTask);
 gulp.task('clean', cleanTask);
 
 function buildScriptsTask() {
-  return browserify('src/scripts/main.js')
+  return browserify('src/scripts/main.js', {
+    debug : true
+  })
     .bundle()
     .on('error', function (err) {
       gutil.log('error occurred in pipeline:', err);
       this.push(null);
     })
     .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('out/'))
     .pipe(browserSync.stream());
 }
