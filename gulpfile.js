@@ -1,6 +1,8 @@
 // lets begin!
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var gutil = require('gulp-util');
+var through = require('through2');
 var del = require('del');
 
 gulp.task('default', ['build']);
@@ -12,7 +14,8 @@ gulp.task('copy', copyTask);
 gulp.task('clean', cleanTask);
 
 function compileScssTask() {
-  return gulp.src('src/styles/app.scss')
+  return gulp.src('src/styles/*.scss')
+    .pipe(inspect())
     .pipe(sass())
     .pipe(gulp.dest('out/'));
 }
@@ -24,4 +27,12 @@ function copyTask() {
 
 function cleanTask() {
   return del('out/');
+}
+
+function inspect() {
+  return through.obj(function(file, _, callback) {
+    gutil.log('looking at file:', file);
+    this.push(file);
+    callback();
+  });
 }
