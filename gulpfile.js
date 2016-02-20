@@ -12,6 +12,7 @@ gulp.task('default', ['build']);
 gulp.task('build', ['build:copy', 'build:scss']);
 gulp.task('build:scss', compileScssTask);
 gulp.task('build:copy', copyTask);
+gulp.task('build:scripts', buildScriptsTask);
 
 // See https://www.npmjs.com/package/gulp-sequence
 // to make this sequential
