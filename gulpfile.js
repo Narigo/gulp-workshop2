@@ -2,6 +2,7 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var gutil = require('gulp-util');
+var plumber = require('gulp-plumber');
 var through = require('through2');
 var del = require('del');
 
@@ -28,12 +29,12 @@ function watchCopyTask() {
 
 function compileScssTask() {
   return gulp.src('src/styles/*.scss')
+    .pipe(plumber(function (err) {
+      gutil.log('error occurred in pipeline:', err);
+      this.push(null);
+    }))
     .pipe(inspect())
     .pipe(sass())
-    .on('error', function (err) {
-      gutil.log('error occurred:', err);
-      this.push(null);
-    })
     .pipe(gulp.dest('out/'));
 }
 
@@ -49,6 +50,7 @@ function cleanTask() {
 function inspect() {
   return through.obj(function(file, _, callback) {
     gutil.log('looking at file:', file);
+    //this.emit('error', new Error('something broke!'));
     this.push(file);
     callback();
   });
