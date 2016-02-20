@@ -11,7 +11,14 @@ gulp.task('build', ['copy', 'scss']);
 gulp.task('scss', compileScssTask);
 gulp.task('copy', copyTask);
 
+gulp.task('watch', ['build'], watchTask);
+
 gulp.task('clean', cleanTask);
+
+function watchTask() {
+  gulp.watch('src/styles/*.scss', {}, ['scss']);
+  gulp.watch('src/assets/**', {}, ['copy']);
+}
 
 function compileScssTask() {
   return gulp.src('src/styles/*.scss')
