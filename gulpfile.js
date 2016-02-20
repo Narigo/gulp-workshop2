@@ -11,12 +11,18 @@ gulp.task('build', ['copy', 'scss']);
 gulp.task('scss', compileScssTask);
 gulp.task('copy', copyTask);
 
-gulp.task('watch', ['build'], watchTask);
+// See https://www.npmjs.com/package/gulp-sequence
+// to make this sequential
+gulp.task('watch', ['build', 'watch:scss', 'watch:copy']);
+gulp.task('watch:scss', watchScssTask);
+gulp.task('watch:copy', watchCopyTask);
 
 gulp.task('clean', cleanTask);
 
-function watchTask() {
+function watchScssTask() {
   gulp.watch('src/styles/*.scss', {}, ['scss']);
+}
+function watchCopyTask() {
   gulp.watch('src/assets/**', {}, ['copy']);
 }
 
