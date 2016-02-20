@@ -1,6 +1,7 @@
 // lets begin!
 var gulp = require('gulp');
 
-gulp.task('hello', function() {
-  console.log('hello!');
+gulp.task('copy', function () {
+  return gulp.src('src/assets/**')
+    .pipe(gulp.dest('out/'));
 });
