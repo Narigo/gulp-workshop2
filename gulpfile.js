@@ -3,8 +3,9 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var del = require('del');
 
-gulp.task('default', ['copy']);
+gulp.task('default', ['build']);
 
+gulp.task('build', ['copy', 'scss']);
 gulp.task('scss', compileScssTask);
 gulp.task('copy', copyTask);
 
