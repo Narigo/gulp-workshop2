@@ -1,9 +1,14 @@
 $font-family: Helvetica sans-serif;
 $font-size: 36px;
-$background-color: #cfffcf;
+$h1-size: 48px;
+$background-color: #ffffff;
 
 body {
   font-family: $font-family;
   font-size: $font-size;
   background-color: $background-color;
+
+  h1 {
+    font-size: $h1-size;
+  }
 }
