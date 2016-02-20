@@ -30,6 +30,10 @@ function compileScssTask() {
   return gulp.src('src/styles/*.scss')
     .pipe(inspect())
     .pipe(sass())
+    .on('error', function (err) {
+      gutil.log('error occurred:', err);
+      this.push(null);
+    })
     .pipe(gulp.dest('out/'));
 }
 
