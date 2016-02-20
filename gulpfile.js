@@ -4,11 +4,16 @@ var del = require('del');
 
 gulp.task('default', ['copy']);
 
-gulp.task('copy', function () {
+gulp.task('copy', copyTask);
+
+gulp.task('clean', cleanTask);
+
+
+function copyTask() {
   return gulp.src('src/assets/**')
     .pipe(gulp.dest('out/'));
-});
+}
 
-gulp.task('clean', function () {
+function cleanTask() {
   return del('out/');
-});
+}
