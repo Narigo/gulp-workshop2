@@ -7,9 +7,9 @@ var del = require('del');
 
 gulp.task('default', ['build']);
 
-gulp.task('build', ['copy', 'scss']);
-gulp.task('scss', compileScssTask);
-gulp.task('copy', copyTask);
+gulp.task('build', ['build:copy', 'build:scss']);
+gulp.task('build:scss', compileScssTask);
+gulp.task('build:copy', copyTask);
 
 // See https://www.npmjs.com/package/gulp-sequence
 // to make this sequential
@@ -20,10 +20,10 @@ gulp.task('watch:copy', watchCopyTask);
 gulp.task('clean', cleanTask);
 
 function watchScssTask() {
-  gulp.watch('src/styles/*.scss', {}, ['scss']);
+  gulp.watch('src/styles/*.scss', {}, ['build:scss']);
 }
 function watchCopyTask() {
-  gulp.watch('src/assets/**', {}, ['copy']);
+  gulp.watch('src/assets/**', {}, ['build:copy']);
 }
 
 function compileScssTask() {
