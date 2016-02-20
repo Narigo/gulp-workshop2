@@ -18,8 +18,9 @@ gulp.task('build:scripts', buildScriptsTask);
 
 // See https://www.npmjs.com/package/gulp-sequence
 // to make this sequential
-gulp.task('watch', ['build', 'watch:scss', 'watch:copy']);
+gulp.task('watch', ['build', 'watch:scss', 'watch:copy', 'watch:scripts']);
 gulp.task('watch:scss', watchScssTask);
+gulp.task('watch:scripts', watchScriptsTask);
 gulp.task('watch:copy', watchCopyTask);
 
 gulp.task('dev', ['watch'], setupBrowserSyncTask);
@@ -34,7 +35,8 @@ function buildScriptsTask() {
       this.push(null);
     })
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('out/'));
+    .pipe(gulp.dest('out/'))
+    .pipe(browserSync.stream());
 }
 
 function setupBrowserSyncTask() {
@@ -51,6 +53,9 @@ function watchScssTask() {
 }
 function watchCopyTask() {
   gulp.watch('src/assets/**', {}, ['build:copy']);
+}
+function watchScriptsTask() {
+  gulp.watch('src/scripts/**', {}, ['build:scripts']);
 }
 
 function compileScssTask() {
